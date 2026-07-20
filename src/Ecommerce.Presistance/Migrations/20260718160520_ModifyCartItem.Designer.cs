@@ -4,6 +4,7 @@ using Ecommerce.Presistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Presistance.Migrations
 {
     [DbContext(typeof(AppdbContext))]
-    partial class AppdbContextModelSnapshot : ModelSnapshot
+    [Migration("20260718160520_ModifyCartItem")]
+    partial class ModifyCartItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,13 +40,19 @@ namespace Ecommerce.Presistance.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Carts");
                 });
@@ -54,7 +63,7 @@ namespace Ecommerce.Presistance.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CartId")
+                    b.Property<Guid?>("CartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -63,7 +72,7 @@ namespace Ecommerce.Presistance.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quentity")
@@ -82,41 +91,6 @@ namespace Ecommerce.Presistance.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Orders.Entities.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Products.Entities.Category", b =>
@@ -286,49 +260,15 @@ namespace Ecommerce.Presistance.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("OrderItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderItems");
-                });
-
             modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Carts.Entities.Cart", b =>
                 {
                     b.HasOne("Ecommerce.Domain.AggregateRootes.Users.Entities.User", "User")
-                        .WithOne("Cart")
-                        .HasForeignKey("Ecommerce.Domain.AggregateRootes.Carts.Entities.Cart", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("Ecommerce.Domain.AggregateRootes.Carts.Entities.Cart", "UserId");
+
+                    b.HasOne("Ecommerce.Domain.AggregateRootes.Users.Entities.User", null)
+                        .WithMany("Cart")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
@@ -336,31 +276,17 @@ namespace Ecommerce.Presistance.Migrations
             modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Carts.Entities.CartItem", b =>
                 {
                     b.HasOne("Ecommerce.Domain.AggregateRootes.Carts.Entities.Cart", "Cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("CartId");
 
                     b.HasOne("Ecommerce.Domain.AggregateRootes.Products.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Cart");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Orders.Entities.Order", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.AggregateRootes.Users.Entities.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Products.Entities.Product", b =>
@@ -393,35 +319,6 @@ namespace Ecommerce.Presistance.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("OrderItem", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.AggregateRootes.Orders.Entities.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.AggregateRootes.Products.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Carts.Entities.Cart", b =>
-                {
-                    b.Navigation("CartItems");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Orders.Entities.Order", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Products.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -435,8 +332,6 @@ namespace Ecommerce.Presistance.Migrations
             modelBuilder.Entity("Ecommerce.Domain.AggregateRootes.Users.Entities.User", b =>
                 {
                     b.Navigation("Cart");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("UserRoles");
                 });

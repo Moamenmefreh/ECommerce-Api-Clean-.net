@@ -12,6 +12,6 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).HasMaxLength(100);
         
-    builder.ToTable("Categories");
+        builder.ToTable("Categories");
     }
 }

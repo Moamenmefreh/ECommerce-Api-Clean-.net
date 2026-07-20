@@ -98,7 +98,7 @@ namespace Ecommerce.Presistance.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    //UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -111,11 +111,7 @@ namespace Ecommerce.Presistance.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Carts_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
+                 
                 });
 
             migrationBuilder.CreateTable(
@@ -151,8 +147,8 @@ namespace Ecommerce.Presistance.Migrations
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CartId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    //CartId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    //ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -166,22 +162,22 @@ namespace Ecommerce.Presistance.Migrations
                         principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CartItems_Carts_CartId1",
-                        column: x => x.CartId1,
-                        principalTable: "Carts",
-                        principalColumn: "Id");
+                    //table.ForeignKey(
+                    //    name: "FK_CartItems_Carts_CartId1",
+                    //    column: x => x.CartId1,
+                    //    principalTable: "Carts",
+                    //    principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CartItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CartItems_Products_ProductId1",
-                        column: x => x.ProductId1,
-                        principalTable: "Products",
-                        principalColumn: "Id");
+                    //table.ForeignKey(
+                    //    name: "FK_CartItems_Products_ProductId1",
+                    //    column: x => x.ProductId1,
+                    //    principalTable: "Products",
+                    //    principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -189,22 +185,22 @@ namespace Ecommerce.Presistance.Migrations
                 table: "CartItems",
                 column: "CartId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CartItems_CartId1",
-                table: "CartItems",
-                column: "CartId1");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_CartItems_CartId1",
+            //    table: "CartItems",
+            //    column: "CartId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_ProductId",
                 table: "CartItems",
                 column: "ProductId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CartItems_ProductId1",
-                table: "CartItems",
-                column: "ProductId1",
-                unique: true,
-                filter: "[ProductId1] IS NOT NULL");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_CartItems_ProductId1",
+            //    table: "CartItems",
+            //    column: "ProductId1",
+            //    unique: true,
+            //    filter: "[ProductId1] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",
@@ -213,10 +209,10 @@ namespace Ecommerce.Presistance.Migrations
                 unique: true,
                 filter: "[UserId] IS NOT NULL");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_UserId1",
-                table: "Carts",
-                column: "UserId1");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Carts_UserId1",
+            //    table: "Carts",
+            //    column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

@@ -24,7 +24,7 @@ public class Product : Base
     public Category? Category { get; set; }
 
    
-    public CartItem? CartItem { get; set; }
+    //public CartItem? CartItem { get; set; }
     public static Product Create(string name, string description, decimal price, decimal? discountPrice, int quantity, Guid categoryId, bool isAvailable = true)
     {
         return new Product
@@ -34,6 +34,7 @@ public class Product : Base
             Description = description,
             DiscountPrice = discountPrice,
             IsAvailable = isAvailable,
+            CategoryId=categoryId,
             IsDeleted = false,
            
           

@@ -12,10 +12,7 @@
 
   <ItemGroup>
     <Folder Include="AggregateRootes\Carts\Enum\" />
-    <Folder Include="AggregateRootes\Carts\Repository\" />
     <Folder Include="AggregateRootes\Carts\Value Object\" />
-    <Folder Include="AggregateRootes\Orders\Enum\" />
-    <Folder Include="AggregateRootes\Orders\Repository\" />
     <Folder Include="AggregateRootes\Orders\Value Object\" />
     <Folder Include="AggregateRootes\Products\Enum\" />
     <Folder Include="AggregateRootes\Products\Value Object\" />

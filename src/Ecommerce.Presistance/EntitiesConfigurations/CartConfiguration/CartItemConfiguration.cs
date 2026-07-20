@@ -8,10 +8,11 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 {
     public void Configure(EntityTypeBuilder<CartItem> builder)
     {
-      builder.HasKey(x=>x.Id);
+        builder.HasKey(x=>x.Id);
         builder.HasOne(x => x.Cart)
-            .WithMany()
-            .HasForeignKey("CartId");
+       .WithMany(c => c.CartItems)
+       .HasForeignKey(x => x.CartId)
+       .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(x => x.Quentity)
               .IsRequired();

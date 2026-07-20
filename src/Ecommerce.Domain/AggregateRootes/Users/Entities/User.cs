@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
+using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using Ecommerce.Domain.BaseEntity;
 
 namespace Ecommerce.Domain.AggregateRootes.Users.Entities;
@@ -16,9 +17,10 @@ public class User : Base
     public string? VerificationToken { get; set; }
 
     public DateTime? VerificationTokenExpiry { get; set; }
+    public Cart? Cart { get; set; }
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
-    public List<Cart>? Cart {  get; set; }
-
+    //public List<Cart>? Cart {  get; set; }
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
     public static User Create(string name, bool isActive, string phone, string email, string password)
     {
         if (string.IsNullOrWhiteSpace(name))

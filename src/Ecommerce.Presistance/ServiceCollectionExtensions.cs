@@ -1,4 +1,6 @@
-﻿using Ecommerce.Domain.AggregateRootes.Products.Repository;
+﻿using Ecommerce.Domain.AggregateRootes.Carts.Repository;
+using Ecommerce.Domain.AggregateRootes.Orders.Repository;
+using Ecommerce.Domain.AggregateRootes.Products.Repository;
 using Ecommerce.Presistance.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,9 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ICartItemRepository,CartItemRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
     }
 }
 
