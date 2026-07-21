@@ -6,10 +6,10 @@ namespace Ecommerce.Domain.AggregateRootes.Users.Entities;
 
 public class User : Base
 {
-    public string Name { get; set; } = default!;
-    public string? Phone { get; set; }
-    public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string Name { get; private set; } = default!;
+    public string Phone { get; private set; } = default!;
+    public string Email { get; private set; } = default!;
+    public string PasswordHash { get; private set; } = default!;
 
     public bool IsActive { get; set; }
     public bool EmailVerified { get; set; }
@@ -21,7 +21,7 @@ public class User : Base
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     //public List<Cart>? Cart {  get; set; }
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public static User Create(string name, bool isActive, string phone, string email, string password)
+    public static User Create(string name, string phone, string email, string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -29,10 +29,10 @@ public class User : Base
         if (string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email is required");
 
-        if (string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password is required");
 
-        if (password.Length < 6)
+        if (passwordHash.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
         if (string.IsNullOrWhiteSpace(phone))
@@ -41,15 +41,15 @@ public class User : Base
         return new User()
         {
             Name = name,
-            IsDeleted = false,
-           // CreatedDate = DateTime.Now,
-            IsActive = isActive,
             Phone = phone,
-            Password = password,
-            Email = email
+            Email = email,
+            PasswordHash = passwordHash,
+            IsActive = true,
+            EmailVerified = false,
+            IsDeleted = false
         };
     }
-    public void Update(string name, bool isActive, string phone)
+    public void Update(string name, string phone)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -61,7 +61,7 @@ public class User : Base
             throw new ArgumentException("Phone must be at least 10 digits");
 
         Name = name;
-        IsActive = isActive;
+       
         Phone = phone;
        // ModifiedDate = DateTime.UtcNow;
     }
@@ -81,7 +81,7 @@ public class User : Base
         if (newPassword.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
-        Password = newPassword;
+        PasswordHash = newPassword;
        // ModifiedDate = DateTime.UtcNow;
     }
     public void DeleteRole(int roleId)

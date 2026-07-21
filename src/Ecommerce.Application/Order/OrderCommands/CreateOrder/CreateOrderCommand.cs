@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Ecommerce.Application.Orders.OrderCommands.CreateOrder;
+namespace Ecommerce.Application.Order.OrderCommands.CreateOrder;
 
 public class CreateOrderCommand : IRequest<CreateOrderResponse>
 {

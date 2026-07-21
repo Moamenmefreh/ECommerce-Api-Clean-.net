@@ -1,18 +1,24 @@
-﻿using Hospital.Domain.AggregateRootes.Users;
+﻿using Ecommerce.Domain.AggregateRootes.Users.Entities;
 
-namespace Hospital.Domain.AggregateRootes.Users.IRepository;
+namespace Ecommerce.Domain.AggregateRootes.Users.Repository;
+
 public interface IUserRepository
 {
-	//public Task<User> Create(User user);
-	//public Task Update(User user);
-	//public Task<Users.Entities.User> GetById(int id);
-	//public Task Delete(User user);
-	//public Task<List<User>> GetAll(string? Name);
-	////public Task AddRoleToUser(int userId, Role role);
-	//public  Task RemoveRoleUser(int userId);
-	//public Task<User> GetByEmail(string email);
-	//public Task<User> GetByVerificationTokenAsync(string token);
-	//public Task<string> ChangePassword(int userId, string newPassword);
+    Task<User> Create(User user);
 
+    Task Update(User user);
 
+    Task<User?> GetById(Guid id);
+
+    Task Delete(User user);
+
+    Task<List<User>> GetAll(string? name);
+
+    Task RemoveRoleUser(Guid userId);
+
+    Task<User?> GetByEmail(string email);
+
+    Task<User?> GetByVerificationTokenAsync(string token);
+
+    Task<string> ChangePassword(Guid userId, string newPassword);
 }
