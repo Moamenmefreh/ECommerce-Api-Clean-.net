@@ -9,7 +9,7 @@ public class User : Base
     public string Name { get; set; } = default!;
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string? PasswordHash { get; set; }
 
     public bool IsActive { get; set; }
     public bool EmailVerified { get; set; }
@@ -21,7 +21,7 @@ public class User : Base
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     //public List<Cart>? Cart {  get; set; }
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public static User Create(string name, bool isActive, string phone, string email, string password)
+    public static User Create(string name, string phone, string email, string password)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -43,9 +43,9 @@ public class User : Base
             Name = name,
             IsDeleted = false,
            // CreatedDate = DateTime.Now,
-            IsActive = isActive,
+          
             Phone = phone,
-            Password = password,
+            PasswordHash = password,
             Email = email
         };
     }
@@ -81,7 +81,7 @@ public class User : Base
         if (newPassword.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
-        Password = newPassword;
+        PasswordHash = newPassword;
        // ModifiedDate = DateTime.UtcNow;
     }
     public void DeleteRole(int roleId)

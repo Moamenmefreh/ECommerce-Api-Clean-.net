@@ -55,5 +55,14 @@ public class Order:Base
     {
         Status = OrderStatus.Cancelled;
     }
+    public void UpdateStatus(OrderStatus status)
+    {
+        if (Status == OrderStatus.Cancelled)
+        {
+            throw new ArgumentException(
+                "Cancelled order cannot be updated.");
+        }
 
+        Status = status;
+    }
 }
