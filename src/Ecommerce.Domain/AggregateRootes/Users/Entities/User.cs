@@ -9,7 +9,7 @@ public class User : Base
     public string Name { get; set; } = default!;
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string? PasswordHash { get; set; }
 
     public bool IsActive { get; set; }
     public bool EmailVerified { get; set; }
@@ -17,11 +17,16 @@ public class User : Base
     public string? VerificationToken { get; set; }
 
     public DateTime? VerificationTokenExpiry { get; set; }
+   
+
+    public string? PasswordResetToken { get; private set; }
+
+    public DateTime? PasswordResetTokenExpiry { get; private set; }
     public Cart? Cart { get; set; }
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     //public List<Cart>? Cart {  get; set; }
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public static User Create(string name, bool isActive, string phone, string email, string password)
+    public static User Create(string name, string phone, string email, string password)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -43,13 +48,29 @@ public class User : Base
             Name = name,
             IsDeleted = false,
            // CreatedDate = DateTime.Now,
-            IsActive = isActive,
+          
             Phone = phone,
-            Password = password,
+            PasswordHash = password,
             Email = email
         };
     }
-    public void Update(string name, bool isActive, string phone)
+    public void GeneratePasswordResetToken()
+    {
+        PasswordResetToken = Guid.NewGuid().ToString();
+
+        PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(1);
+    }
+    public void ResetPassword(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+
+        PasswordResetToken = null;
+
+        PasswordResetTokenExpiry = null;
+
+        UpdatedAt = DateTime.UtcNow;
+    }
+    public void Update(string name, string phone)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -61,7 +82,7 @@ public class User : Base
             throw new ArgumentException("Phone must be at least 10 digits");
 
         Name = name;
-        IsActive = isActive;
+        IsActive = true;
         Phone = phone;
        // ModifiedDate = DateTime.UtcNow;
     }
@@ -73,15 +94,16 @@ public class User : Base
 
         IsDeleted = true;
     }
-    public void ChangePassword(string newPassword)
+    public void ChangePassword(string passwordHash)
     {
-        if (string.IsNullOrWhiteSpace(newPassword))
+        if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password is required");
 
-        if (newPassword.Length < 6)
+        if (passwordHash.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
-        Password = newPassword;
+        PasswordHash = passwordHash;
+        UpdatedAt = DateTime.Now;
        // ModifiedDate = DateTime.UtcNow;
     }
     public void DeleteRole(int roleId)
@@ -96,6 +118,8 @@ public class User : Base
 
         //UserRoles.Remove(userRole);
     }
+
+
     //public void AddRole(Guid roleId)
     //{
     //    if (roleId <= 0)

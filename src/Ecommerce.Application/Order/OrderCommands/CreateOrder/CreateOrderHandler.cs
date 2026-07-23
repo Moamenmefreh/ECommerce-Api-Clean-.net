@@ -1,9 +1,9 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Repository;
-using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using Ecommerce.Domain.AggregateRootes.Orders.Repository;
+using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using MediatR;
 
-namespace Ecommerce.Application.Orders.OrderCommands.CreateOrder;
+ namespace Ecommerce.Application.Order.OrderCommands.CreateOrder;
 
 public class CreateOrderHandler(
     ICartRepository cartRepository,
@@ -39,7 +39,6 @@ public class CreateOrderHandler(
 
             // إنشاء Order
             var order = Ecommerce.Domain.AggregateRootes.Orders.Entities.Order.Create(request.UserId);
-
             // نقل عناصر السلة إلى الطلب
             foreach (var item in cart.CartItems)
             {
