@@ -6,6 +6,10 @@ using Ecommerce.Domain.AggregateRootes.Products.Repository;
 using Ecommerce.Domain.AggregateRootes.Users.IRepository;
 using Ecommerce.Infrastructure.Authentication;
 using Ecommerce.Infrastructure.JWT;
+using Ecommerce.Application.JWT;
+using Ecommerce.Domain.AggregateRootes.Carts.Repository;
+using Ecommerce.Domain.AggregateRootes.Orders.Repository;
+using Ecommerce.Domain.AggregateRootes.Products.Repository;
 using Ecommerce.Presistance.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,14 +17,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using Ecommerce.Application.JWT;
 namespace Ecommerce.Presistance;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddPersistence(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
+
     {
         services.AddDbContext<AppdbContext>(options =>
             options.UseSqlServer(
@@ -31,6 +34,8 @@ public static class ServiceCollectionExtensions
 
         
 
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.AddScoped<EmailSettings>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ICartItemRepository, CartItemRepository>();
