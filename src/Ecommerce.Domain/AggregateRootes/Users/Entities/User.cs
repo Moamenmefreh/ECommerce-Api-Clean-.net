@@ -17,6 +17,11 @@ public class User : Base
     public string? VerificationToken { get; set; }
 
     public DateTime? VerificationTokenExpiry { get; set; }
+   
+
+    public string? PasswordResetToken { get; private set; }
+
+    public DateTime? PasswordResetTokenExpiry { get; private set; }
     public Cart? Cart { get; set; }
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     //public List<Cart>? Cart {  get; set; }
@@ -73,12 +78,12 @@ public class User : Base
 
         IsDeleted = true;
     }
-    public void ChangePassword(string newPassword)
+    public void ChangePassword(string passwordHash)
     {
-        if (string.IsNullOrWhiteSpace(newPassword))
+        if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password is required");
 
-        if (newPassword.Length < 6)
+        if (passwordHash.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
         PasswordHash = newPassword;
@@ -96,6 +101,8 @@ public class User : Base
 
         //UserRoles.Remove(userRole);
     }
+
+
     //public void AddRole(Guid roleId)
     //{
     //    if (roleId <= 0)

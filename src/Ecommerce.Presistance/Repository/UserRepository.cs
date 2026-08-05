@@ -1,12 +1,12 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Users.Entities;
-using Ecommerce.Domain.AggregateRootes.Users.Repository;
+using Ecommerce.Domain.AggregateRootes.Users.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Presistance.Repository;
 
 public class UserRepository(AppdbContext _context) : IUserRepository
 {
-   
+
 
     public async Task<User> Create(User user)
     {
@@ -71,15 +71,14 @@ public class UserRepository(AppdbContext _context) : IUserRepository
     }
 
 
-    public async Task<string> ChangePassword(Guid userId, string newPassword)
+    public async Task<string> ChangePassword(User user)
     {
         var user = await GetById(userId);
 
         if (user == null)
             throw new Exception("User not found");
 
-        user.ChangePassword(newPassword);
-
+        _context.Users.Update(user);
         await _context.SaveChangesAsync();
 
         return "Password changed successfully";
@@ -88,5 +87,21 @@ public class UserRepository(AppdbContext _context) : IUserRepository
     public Task RemoveRoleUser(Guid userId)
     {
         throw new NotImplementedException();
+    }
+
+    
+    public Task RemoveRoleUser(int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> ChangePassword(int userId, string newPassword)
+    {
+        throw new NotImplementedException();
+    }
+    public async Task<User?> GetByPasswordResetToken(string token)
+    {
+        return await _context.Users
+            .FirstOrDefaultAsync(x => x.PasswordResetToken == token);
     }
 }
