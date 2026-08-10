@@ -48,7 +48,7 @@ public class ChangePasswordHandler(
 
         user.ChangePassword(newPasswordHash);
 
-        await userRepository.ChangePassword(user);
+        await userRepository.ChangePassword(user); ;
 
         return new ChangePasswordResponse
         {
