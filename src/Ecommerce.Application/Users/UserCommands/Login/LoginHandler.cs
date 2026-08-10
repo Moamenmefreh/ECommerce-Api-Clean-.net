@@ -21,8 +21,12 @@ public class LoginHandler(
             throw new Exception("Invalid email or password.");
         }
 
-        // تحقق من كلمة المرور هنا
 
+        // تحقق من كلمة المرور هنا
+        if (!BCrypt.Net.BCrypt.Verify(request.Password,user.PasswordHash))
+        {
+            throw new Exception("Invalid Email or Password");
+        }
         if (!user.EmailVerified)
         {
             return new LoginResponse

@@ -1,7 +1,6 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
 using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using Ecommerce.Domain.BaseEntity;
-
 namespace Ecommerce.Domain.AggregateRootes.Users.Entities;
 
 public class User : Base
@@ -17,6 +16,11 @@ public class User : Base
     public string? VerificationToken { get; set; }
 
     public DateTime? VerificationTokenExpiry { get; set; }
+   
+
+    public string? PasswordResetToken { get; private set; }
+
+    public DateTime? PasswordResetTokenExpiry { get; private set; }
     public Cart? Cart { get; set; }
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     //public List<Cart>? Cart {  get; set; }
@@ -49,7 +53,23 @@ public class User : Base
             Email = email
         };
     }
-    public void Update(string name, bool isActive, string phone)
+    public void GeneratePasswordResetToken()
+    {
+        PasswordResetToken = Guid.NewGuid().ToString();
+
+        PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(1);
+    }
+    public void ResetPassword(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+
+        PasswordResetToken = null;
+
+        PasswordResetTokenExpiry = null;
+
+        UpdatedAt = DateTime.UtcNow;
+    }
+    public void Update(string name, string phone)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -61,7 +81,7 @@ public class User : Base
             throw new ArgumentException("Phone must be at least 10 digits");
 
         Name = name;
-        IsActive = isActive;
+        IsActive = true;
         Phone = phone;
        // ModifiedDate = DateTime.UtcNow;
     }
@@ -73,17 +93,23 @@ public class User : Base
 
         IsDeleted = true;
     }
-    public void ChangePassword(string newPassword)
+    public void ChangePassword(string passwordHash)
     {
-        if (string.IsNullOrWhiteSpace(newPassword))
+        if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password is required");
 
-        if (newPassword.Length < 6)
+        if (passwordHash.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
-        PasswordHash = newPassword;
+        PasswordHash = passwordHash;
+        UpdatedAt = DateTime.Now;
        // ModifiedDate = DateTime.UtcNow;
     }
+    //public void GeneratePasswordResetToken()
+    //{
+    //    PasswordResetToken = Guid.NewGuid().ToString();
+    //    PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(1);
+    //}
     public void DeleteRole(int roleId)
     {
         if (roleId <= 0)
@@ -96,6 +122,14 @@ public class User : Base
 
         //UserRoles.Remove(userRole);
     }
+
+    //public void ResetPassword(string newPassword)
+    //{
+    //    PasswordHash = newPassword;
+    //    PasswordResetToken = null;
+    //    PasswordResetTokenExpiry = null;
+    //    UpdatedAt = DateTime.UtcNow;
+    //}
     //public void AddRole(Guid roleId)
     //{
     //    if (roleId <= 0)

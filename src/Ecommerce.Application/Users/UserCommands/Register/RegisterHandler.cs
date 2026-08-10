@@ -3,6 +3,7 @@ using Ecommerce.Application.Users.UserCommands.Register;
 using Ecommerce.Domain.AggregateRootes.Users.Entities;
 using Ecommerce.Domain.AggregateRootes.Users.IRepository;
 using MediatR;
+using BCrypt.Net;
 
 public class RegisterHandler(
     IUserRepository userRepository,
@@ -20,7 +21,7 @@ public class RegisterHandler(
         {
             throw new Exception("Email already exists");
         }
-
+        request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
         var user = User.Create(
             request.Name,

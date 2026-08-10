@@ -1,0 +1,90 @@
+[1mdiff --cc Program.cs[m
+[1mindex 164f5ce,bf710c4..0000000[m
+[1m--- a/Program.cs[m
+[1m+++ b/Program.cs[m
+[36m@@@ -1,6 -1,9 +1,11 @@@[m
+  [m
+  using Ecommerce.Application;[m
+[32m++<<<<<<< Updated upstream[m
+[32m++=======[m
+[32m+ using Ecommerce.Application.JWT;[m
+[32m+ using Ecommerce.Infrastructure.JWT;[m
+[32m++>>>>>>> Stashed changes[m
+  using Ecommerce.Presistance;[m
+[31m -using Microsoft.OpenApi;[m
+  var builder = WebApplication.CreateBuilder(args);[m
+  [m
+  // Add services to the container.[m
+[36m@@@ -8,9 -11,32 +13,38 @@@[m [mbuilder.Services.AddApplication()[m
+  [m
+  builder.Services.AddPersistence(builder.Configuration);[m
+  builder.Services.AddControllers();[m
+[32m++<<<<<<< Updated upstream[m
+[32m +// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi[m
+[32m +builder.Services.AddOpenApi();[m
+[32m +builder.Services.AddSwaggerGen();[m
+[32m++=======[m
+[32m+ builder.Services.Configure<JwtProvider>([m
+[32m+     builder.Configuration.GetSection("Jwt"));[m
+[32m+ builder.Services.AddOpenApi();[m
+[32m+ builder.Services.AddSwaggerGen(options =>[m
+[32m+ {[m
+[32m+     options.SwaggerDoc("v1", new OpenApiInfo[m
+[32m+     {[m
+[32m+         Title = "Ecommerce API",[m
+[32m+         Version = "v1"[m
+[32m+     });[m
+[32m+ [m
+[32m+     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme[m
+[32m+     {[m
+[32m+         Name = "Authorization",[m
+[32m+         Type = SecuritySchemeType.Http,[m
+[32m+         Scheme = "bearer",[m
+[32m+         BearerFormat = "JWT",[m
+[32m+         In = ParameterLocation.Header,[m
+[32m+         Description = "Enter your JWT token."[m
+[32m+     });[m
+[32m+     options.AddSecurityRequirement(document => new OpenApiSecurityRequirement[m
+[32m+     {[m
+[32m+         [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()[m
+[32m+     });[m
+[32m+ });[m
+[32m+ builder.Services.AddControllers();[m
+[32m++>>>>>>> Stashed changes[m
+  var app = builder.Build();[m
+  [m
+  // Configure the HTTP request pipeline.[m
+[1mdiff --cc appsettings.json[m
+[1mindex 9cfa25e,e008080..0000000[m
+[1m--- a/appsettings.json[m
+[1m+++ b/appsettings.json[m
+[36m@@@ -8,8 -8,20 +8,26 @@@[m
+        "Microsoft.AspNetCore": "Warning"[m
+      }[m
+    },[m
+[32m++<<<<<<< Updated upstream[m
+[32m +  "AllowedHosts": "*"[m
+[32m + [m
+[32m +    }[m
+[32m++=======[m
+[32m+   "AllowedHosts": "*",[m
+[32m+   "Jwt": {[m
+[32m+     "Key": "THIS_IS_A_SECRET_KEY_12345678901234567890",[m
+[32m+     "Issuer": "EcommerceAPI",[m
+[32m+     "Audience": "EcommerceClient",[m
+[32m+     "ExpireMinutes": 120[m
+[32m+   },[m
+[32m+   "EmailSettings": {[m
+[32m+     "Host": "sandbox.smtp.mailtrap.io",[m
+[32m+     "Port": 587,[m
+[32m+     "Email": "moamenme@gkmuj.com",[m
+[32m+     "UserName": "5fe02e16ab12ca",[m
+[32m+     "Password": "7e9543b0e11afd"[m
+[32m+   }[m
+[32m+ }[m
+[32m++>>>>>>> Stashed changes[m
+    [m
+  [m
+* Unmerged path Controllers/AdminController.cs
+* Unmerged path Controllers/OrdersController.cs
+* Unmerged path Controllers/UsersController.cs

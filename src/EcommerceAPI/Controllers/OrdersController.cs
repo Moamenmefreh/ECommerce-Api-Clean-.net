@@ -1,5 +1,5 @@
-﻿using Ecommerce.Application.Orders.OrderCommands.CancelOrder;
-using Ecommerce.Application.Orders.OrderCommands.CreateOrder;
+﻿using Ecommerce.Application.Order.OrderCommands.CreateOrder;
+using Ecommerce.Application.Orders.OrderCommands.CancelOrder;
 using Ecommerce.Application.Orders.OrderQueries.GetOrderById;
 using Ecommerce.Application.Orders.OrderQueries.GetUserOrders;
 using MediatR;

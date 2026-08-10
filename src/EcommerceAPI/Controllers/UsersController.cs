@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.Users.UserCommands.ChangePassword;
+﻿
+using Ecommerce.Application.Users.UserCommands.ChangePassword;
 using Ecommerce.Application.Users.UserCommands.ForgotPassword;
 using Ecommerce.Application.Users.UserCommands.Register;
 using Ecommerce.Application.Users.UserCommands.ResetPassword;
@@ -6,7 +7,6 @@ using Ecommerce.Application.Users.UserQueries.GetCurrentUser;
 using Ecommerce.Application.Users.UserQueries.VerifyEmail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
