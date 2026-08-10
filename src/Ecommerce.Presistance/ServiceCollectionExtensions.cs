@@ -7,6 +7,8 @@ using Ecommerce.Domain.AggregateRootes.Users.IRepository;
 using Ecommerce.Infrastructure.Authentication;
 using Ecommerce.Infrastructure.JWT;
 using Ecommerce.Presistance.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

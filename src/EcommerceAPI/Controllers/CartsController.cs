@@ -3,79 +3,60 @@ using Ecommerce.Application.Cart.CartCommands.ClearCart;
 using Ecommerce.Application.Cart.CartCommands.DeleteItem;
 using Ecommerce.Application.Cart.CartCommands.UpdateItemQuntity;
 using Ecommerce.Application.Cart.CartQueries.GetCart;
-using Ecommerce.Application.Products.ProductQueries.GetById;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.API.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-[Authorize]
-public class CartsController(ISender sender) : ControllerBase
+namespace Ecommerce.API.Controllers
 {
-   
-
-    // GET: api/Carts/{cartId}
-    [HttpGet("{cartId:guid}")]
-    public async Task<IActionResult> GetCart(Guid cartId)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CartsController(ISender sender) : ControllerBase
     {
-        var query=new GetCartQuery
+        [HttpGet("{cartId:guid}")]
+        public async Task<IActionResult> GetCart(Guid cartId)
         {
-            CartId = cartId
-        };
-        var result = await sender.Send(query);
-            
-        return Ok(result);
-    }
+            var result = await sender.Send(new GetCartQuery
+            {
+                CartId = cartId
+            });
 
-    // POST: api/Carts/AddItem
-    [HttpPost("AddItem")]
-    public async Task<IActionResult> AddItem(
-        [FromBody] AddItemCommands command)
-    {
-        var result = await sender.Send(command);
-
-        return Ok(result);
-    }
-
-    // PUT: api/Carts/{id}
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateItem(
-        Guid id,
-        [FromBody] UpdateQuntityCommands command)
-
-    {
-        command.ItemId = id;
-        var result = await sender.Send(command);
-
-        return Ok(result);
-    }
-
-    // DELETE: api/Carts/{id}/RemoveItem
-    [HttpDelete("{id:guid}/RemoveItem")]
-    public async Task<IActionResult> RemoveItem(Guid id)
-    {
-        var comand = new DeleteItemCommands
+            return Ok(result);
+        }
+        [HttpDelete("{cartId:guid}/clear")]
+        public async Task<IActionResult> ClearCart(Guid cartId)
         {
-            ItemId = id
-        };
-        var result = await sender.Send(comand);
+            var result = await sender.Send(new ClearCartCommand
+            {
+                CartId = cartId
+            });
 
-        return Ok(result);
-    }
-
-    // DELETE: api/Carts/{cartId}/clear
-    [HttpDelete("{cartId:guid}/clear")]
-    public async Task<IActionResult> ClearCart(Guid cartId)
-    {
-        var query = new GetCartQuery
+            return Ok(result);
+        }
+        [HttpDelete("{id:guid}/RemoveItem")]
+        public async Task<IActionResult> RemoveItem([FromRoute] Guid id)
         {
-            CartId = cartId
-        };
-        var result = await sender.Send(cartId);
+            DeleteItemCommands command = new DeleteItemCommands
+            {
+                ItemId = id
+            };
+            var result = await sender.Send(command);
+            return Ok(result);
+        }
+        [HttpPost("AddItem")]
+        public async Task<IActionResult> CreateItem([FromBody]AddItemCommands command)
+        {
+            var result = await sender.Send(command);
+            return Ok(result);
+        }
+        
+        [HttpPut("{id:guid}")]
 
-        return Ok(result);
+        public async Task<IActionResult> UpdateItem([FromRoute]Guid id,UpdateQuntityCommands command)
+        {
+           command.ItemId = id;
+            var result = await sender.Send(command);
+            return Ok(result);
+        }
     }
 }
