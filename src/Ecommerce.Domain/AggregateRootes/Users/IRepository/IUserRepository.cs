@@ -10,7 +10,7 @@ public interface IUserRepository
     public Task Delete(User user);
     public Task<List<User>> GetAll(string? Name);
     //public Task AddRoleToUser(int userId, Role role);
-    public Task RemoveRoleUser(int userId);
+    public void RemoveRoleUser(Guid userId, Guid roleId);
     public Task<User> GetByEmail(string email);
     public Task<User> GetByVerificationTokenAsync(string token);
     public Task<string> ChangePassword(User user);

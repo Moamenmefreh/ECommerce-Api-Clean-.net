@@ -110,9 +110,9 @@ public class User : Base
     //    PasswordResetToken = Guid.NewGuid().ToString();
     //    PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(1);
     //}
-    public void DeleteRole(int roleId)
+    public void DeleteRole(Guid roleId)
     {
-        if (roleId <= 0)
+        if (roleId ==null)
             throw new ArgumentException("Invalid role id");
 
         //var userRole = UserRoles.FirstOrDefault(r => r.UserId == this.Id && r.RoleId == roleId);

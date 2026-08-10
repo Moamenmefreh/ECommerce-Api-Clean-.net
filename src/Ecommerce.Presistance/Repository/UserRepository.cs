@@ -80,9 +80,10 @@ public class UserRepository(AppdbContext _context) : IUserRepository
         return "Password changed successfully";
     }
 
-    public Task RemoveRoleUser(Guid userId)
+    public void RemoveRoleUser(Guid userId,Guid roleId)
     {
-        throw new NotImplementedException();
+        var roleUser = _context.UserRoles.Where(x => x.UserId == userId && x.RoleId==roleId);
+        _context.Remove(roleUser);
     }
 
     
