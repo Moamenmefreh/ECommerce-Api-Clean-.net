@@ -13,31 +13,47 @@ public class EmailService : IEmailService
     public EmailService(IOptions<EmailSettings> options)
     {
         _settings = options.Value;
-    }
 
-
+            }
     public async Task SendVerificationEmailAsync(
         string email,
         string verificationLink)
     {
+        await SendEmailAsync(
+            email,
+            "Verify Email",
+            $"Click <a href='{verificationLink}'>here</a> to verify your email.");
+    }
+
+
+
+    public async Task SendEmailAsync(
+        string email,
+        string subject,
+        string body)
+    {
         var message = new MimeMessage();
-        Console.WriteLine($"Email From: '{_settings.Email}'");
+
+
         message.From.Add(
             MailboxAddress.Parse(_settings.Email));
+
 
         message.To.Add(
             MailboxAddress.Parse(email));
 
-        message.Subject = "Verify Email";
+
+        message.Subject = subject;
+
 
         message.Body = new TextPart("html")
         {
-            Text =
-            $"Click <a href='{verificationLink}'>here</a> to verify your email."
+            Text = body
         };
 
 
         using var smtp = new SmtpClient();
+
 
         await smtp.ConnectAsync(
             _settings.Host,

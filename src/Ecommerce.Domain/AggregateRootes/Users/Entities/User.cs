@@ -1,15 +1,14 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
 using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using Ecommerce.Domain.BaseEntity;
-
 namespace Ecommerce.Domain.AggregateRootes.Users.Entities;
 
 public class User : Base
 {
-    public string Name { get; set; } = default!;
-    public string? Phone { get; set; }
-    public string? Email { get; set; }
-    public string? PasswordHash { get; set; }
+    public string Name { get; private set; } = default!;
+    public string Phone { get; private set; } = default!;
+    public string Email { get; private set; } = default!;
+    public string PasswordHash { get; private set; } = default!;
 
     public bool IsActive { get; set; }
     public bool EmailVerified { get; set; }
@@ -17,11 +16,16 @@ public class User : Base
     public string? VerificationToken { get; set; }
 
     public DateTime? VerificationTokenExpiry { get; set; }
+   
+
+    public string? PasswordResetToken { get; private set; }
+
+    public DateTime? PasswordResetTokenExpiry { get; private set; }
     public Cart? Cart { get; set; }
     public List<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     //public List<Cart>? Cart {  get; set; }
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public static User Create(string name, string phone, string email, string password)
+    public static User Create(string name, string phone, string email, string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -29,10 +33,10 @@ public class User : Base
         if (string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email is required");
 
-        if (string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password is required");
 
-        if (password.Length < 6)
+        if (passwordHash.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
         if (string.IsNullOrWhiteSpace(phone))
@@ -41,15 +45,15 @@ public class User : Base
         return new User()
         {
             Name = name,
-            IsDeleted = false,
-           // CreatedDate = DateTime.Now,
-          
             Phone = phone,
-            PasswordHash = password,
-            Email = email
+            Email = email,
+            PasswordHash = passwordHash,
+            IsActive = true,
+            EmailVerified = false,
+            IsDeleted = false
         };
     }
-    public void Update(string name, bool isActive, string phone)
+    public void Update(string name, string phone)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required");
@@ -61,7 +65,7 @@ public class User : Base
             throw new ArgumentException("Phone must be at least 10 digits");
 
         Name = name;
-        IsActive = isActive;
+       
         Phone = phone;
        // ModifiedDate = DateTime.UtcNow;
     }
@@ -73,20 +77,25 @@ public class User : Base
 
         IsDeleted = true;
     }
-    public void ChangePassword(string newPassword)
+    public void ChangePassword(string passwordHash)
     {
-        if (string.IsNullOrWhiteSpace(newPassword))
+        if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password is required");
 
-        if (newPassword.Length < 6)
+        if (passwordHash.Length < 6)
             throw new ArgumentException("Password must be at least 6 characters");
 
         PasswordHash = newPassword;
        // ModifiedDate = DateTime.UtcNow;
     }
-    public void DeleteRole(int roleId)
+    //public void GeneratePasswordResetToken()
+    //{
+    //    PasswordResetToken = Guid.NewGuid().ToString();
+    //    PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(1);
+    //}
+    public void DeleteRole(Guid roleId)
     {
-        if (roleId <= 0)
+        if (roleId ==null)
             throw new ArgumentException("Invalid role id");
 
         //var userRole = UserRoles.FirstOrDefault(r => r.UserId == this.Id && r.RoleId == roleId);
@@ -96,6 +105,14 @@ public class User : Base
 
         //UserRoles.Remove(userRole);
     }
+
+    //public void ResetPassword(string newPassword)
+    //{
+    //    PasswordHash = newPassword;
+    //    PasswordResetToken = null;
+    //    PasswordResetTokenExpiry = null;
+    //    UpdatedAt = DateTime.UtcNow;
+    //}
     //public void AddRole(Guid roleId)
     //{
     //    if (roleId <= 0)

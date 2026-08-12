@@ -39,6 +39,10 @@ public class CreateOrderHandler(
 
             // إنشاء Order
             var order = Ecommerce.Domain.AggregateRootes.Orders.Entities.Order.Create(request.UserId);
+<<<<<<<< HEAD:src/Ecommerce.Application/Order/OrderCommands/CreateOrder/CreateOrderHandler.cs
+========
+
+>>>>>>>> main:src/Ecommerce.Application/Order/CreateOrder/CreateOrderHandler.cs
             // نقل عناصر السلة إلى الطلب
             foreach (var item in cart.CartItems)
             {

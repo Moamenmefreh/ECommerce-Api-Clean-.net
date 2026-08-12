@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="14.1.0" />
   </ItemGroup>
 
@@ -16,6 +17,7 @@
     <Folder Include="AggregateRootes\Orders\Value Object\" />
     <Folder Include="AggregateRootes\Products\Enum\" />
     <Folder Include="AggregateRootes\Products\Value Object\" />
+    <Folder Include="AggregateRootes\Reviews\Enum\" />
   </ItemGroup>
 
 </Project>
