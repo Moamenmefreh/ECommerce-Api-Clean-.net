@@ -16,6 +16,7 @@
     <Folder Include="AggregateRootes\Orders\Value Object\" />
     <Folder Include="AggregateRootes\Products\Enum\" />
     <Folder Include="AggregateRootes\Products\Value Object\" />
+    <Folder Include="AggregateRootes\Reviews\Enum\" />
   </ItemGroup>
 
 </Project>
