@@ -1,4 +1,6 @@
-﻿namespace Ecommerce.Application.JWT;
+﻿using Ecommerce.Domain.AggregateRootes.Users.Entities;
+
+namespace Ecommerce.Application.JWT;
 
 using Ecommerce.Domain.AggregateRootes.Users.Entities;
 

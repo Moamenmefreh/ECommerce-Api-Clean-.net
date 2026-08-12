@@ -53,15 +53,28 @@ public class Order:Base
 
     public void Cancel()
     {
+        if (Status == OrderStatus.Shipped ||
+            Status == OrderStatus.Delivered)
+        {
+            throw new ArgumentException(
+                "Order cannot be cancelled.");
+        }
+
+        if (Status == OrderStatus.Cancelled)
+        {
+            throw new ArgumentException(
+                "Order already cancelled.");
+        }
+
         Status = OrderStatus.Cancelled;
     }
     public void UpdateStatus(OrderStatus status)
     {
         if (Status == OrderStatus.Cancelled)
-        {
-            throw new ArgumentException(
-                "Cancelled order cannot be updated.");
-        }
+            throw new ArgumentException("Cancelled order cannot be updated.");
+
+        if (Status == OrderStatus.Delivered)
+            throw new ArgumentException("Delivered order cannot be updated.");
 
         Status = status;
     }

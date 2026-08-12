@@ -1,6 +1,6 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Users.Entities;
 
-namespace Ecommerce.Domain.AggregateRootes.Users.IRepository;
+namespace Ecommerce.Domain.AggregateRootes.Users.Repository;
 
 public interface IUserRepository
 {

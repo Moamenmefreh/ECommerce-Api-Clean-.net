@@ -73,6 +73,10 @@ public class UserRepository(AppdbContext _context) : IUserRepository
 
     public async Task<string> ChangePassword(User user)
     {
+        var user = await GetById(userId);
+
+        if (user == null)
+            throw new Exception("User not found");
 
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
