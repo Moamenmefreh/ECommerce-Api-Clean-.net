@@ -1,7 +1,6 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
 using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using Ecommerce.Domain.BaseEntity;
-
 namespace Ecommerce.Domain.AggregateRootes.Users.Entities;
 
 public class User : Base
@@ -89,9 +88,14 @@ public class User : Base
         PasswordHash = newPassword;
        // ModifiedDate = DateTime.UtcNow;
     }
-    public void DeleteRole(int roleId)
+    //public void GeneratePasswordResetToken()
+    //{
+    //    PasswordResetToken = Guid.NewGuid().ToString();
+    //    PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(1);
+    //}
+    public void DeleteRole(Guid roleId)
     {
-        if (roleId <= 0)
+        if (roleId ==null)
             throw new ArgumentException("Invalid role id");
 
         //var userRole = UserRoles.FirstOrDefault(r => r.UserId == this.Id && r.RoleId == roleId);
@@ -102,7 +106,13 @@ public class User : Base
         //UserRoles.Remove(userRole);
     }
 
-
+    //public void ResetPassword(string newPassword)
+    //{
+    //    PasswordHash = newPassword;
+    //    PasswordResetToken = null;
+    //    PasswordResetTokenExpiry = null;
+    //    UpdatedAt = DateTime.UtcNow;
+    //}
     //public void AddRole(Guid roleId)
     //{
     //    if (roleId <= 0)

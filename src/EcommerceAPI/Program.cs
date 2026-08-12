@@ -1,6 +1,8 @@
 
 using Ecommerce.Application;
 using Ecommerce.Presistance;
+using Microsoft.OpenApi;
+using Ecommerce.Infrastructure.JWT;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

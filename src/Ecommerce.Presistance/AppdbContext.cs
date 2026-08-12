@@ -1,6 +1,7 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
 using Ecommerce.Domain.AggregateRootes.Orders.Entities;
 using Ecommerce.Domain.AggregateRootes.Products.Entities;
+using Ecommerce.Domain.AggregateRootes.Reviews.Entities;
 using Ecommerce.Domain.AggregateRootes.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,4 +28,5 @@ public class AppdbContext: DbContext
     public DbSet<UserRoles> UserRoles=>Set<UserRoles>();
     public DbSet<Order> Orders=>Set<Order>();
     public DbSet<OrderItem> OrderItems=>Set<OrderItem>();
+    public DbSet<Review> Reviews => Set<Review>();
 }

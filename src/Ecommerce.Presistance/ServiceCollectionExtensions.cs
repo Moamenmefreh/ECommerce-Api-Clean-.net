@@ -1,23 +1,22 @@
-﻿using Ecommerce.Application.Interfaces;
+﻿using Ecommerce.API.Services;
+using Ecommerce.Application.Interfaces;
 using Ecommerce.Application.JWT;
 using Ecommerce.Domain.AggregateRootes.Carts.Repository;
 using Ecommerce.Domain.AggregateRootes.Orders.Repository;
 using Ecommerce.Domain.AggregateRootes.Products.Repository;
+using Ecommerce.Domain.AggregateRootes.Reviews.Repository;
 using Ecommerce.Domain.AggregateRootes.Users.IRepository;
+using Ecommerce.Domain.BaseEntity;
 using Ecommerce.Infrastructure.Authentication;
 using Ecommerce.Infrastructure.JWT;
-using Ecommerce.Application.JWT;
-using Ecommerce.Domain.AggregateRootes.Carts.Repository;
-using Ecommerce.Domain.AggregateRootes.Orders.Repository;
-using Ecommerce.Domain.AggregateRootes.Products.Repository;
 using Ecommerce.Presistance.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Ecommerce.Application.JWT;
 namespace Ecommerce.Presistance;
 
 public static class ServiceCollectionExtensions
@@ -33,7 +32,7 @@ public static class ServiceCollectionExtensions
         services.Configure<EmailSettings>(
             configuration.GetSection("EmailSettings"));
 
-        
+     
 
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.AddScoped<EmailSettings>();
@@ -43,10 +42,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICartRepository, CartRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-
+        services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IEmailService, EmailService>();
-
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {

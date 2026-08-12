@@ -13,9 +13,8 @@ public class EmailService : IEmailService
     public EmailService(IOptions<EmailSettings> options)
     {
         _settings = options.Value;
-    }
 
-
+            }
     public async Task SendVerificationEmailAsync(
         string email,
         string verificationLink)
@@ -34,8 +33,6 @@ public class EmailService : IEmailService
         string body)
     {
         var message = new MimeMessage();
-
-        Console.WriteLine($"Email From: '{_settings.Email}'");
 
 
         message.From.Add(

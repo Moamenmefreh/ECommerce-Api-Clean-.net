@@ -2,12 +2,11 @@
 
 public interface IEmailService
 {
- public   Task SendVerificationEmailAsync(
+
+   public Task SendVerificationEmailAsync(
         string email,
         string verificationLink);
-
-  public  Task SendEmailAsync(
-        string email,
+    public  Task SendEmailAsync(string email,
         string subject,
         string body);
 }
