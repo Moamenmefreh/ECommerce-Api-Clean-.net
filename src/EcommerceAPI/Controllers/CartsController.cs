@@ -6,7 +6,6 @@ using Ecommerce.Application.Cart.CartQueries.GetCart;
 using Ecommerce.Application.Carts.CartCommands.CreateCart;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.API.Controllers
@@ -16,23 +15,17 @@ namespace Ecommerce.API.Controllers
     [Authorize]
     public class CartsController(ISender sender) : ControllerBase
     {
-        [HttpGet("{cartId:guid}")]
-        public async Task<IActionResult> GetCart(Guid cartId)
+        [HttpGet("Get Cart")]
+        public async Task<IActionResult> GetCart()
         {
-            var result = await sender.Send(new GetCartQuery
-            {
-                CartId = cartId
-            });
+            var result = await sender.Send(new GetCartQuery());
 
             return Ok(result);
         }
-        [HttpDelete("{cartId:guid}/clear")]
-        public async Task<IActionResult> ClearCart(Guid cartId)
+        [HttpDelete("/clearItems")]
+        public async Task<IActionResult> ClearCart()
         {
-            var result = await sender.Send(new ClearCartCommand
-            {
-                CartId = cartId
-            });
+            var result = await sender.Send(new ClearCartCommand());
 
             return Ok(result);
         }

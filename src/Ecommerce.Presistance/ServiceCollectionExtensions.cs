@@ -30,7 +30,8 @@ public static class ServiceCollectionExtensions
         services.Configure<EmailSettings>(
             configuration.GetSection("EmailSettings"));
 
-     
+        services.Configure<JwtOptions>(
+       configuration.GetSection("Jwt"));
 
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.AddScoped<EmailSettings>();
@@ -41,6 +42,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<Ecommerce.Domain.AggregateRootes.Payments.Repository.IPaymentMethodRepository, PaymentRepository>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddHttpContextAccessor();

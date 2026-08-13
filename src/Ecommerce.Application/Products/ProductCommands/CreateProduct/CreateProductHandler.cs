@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Ecommerce.Application.Products.ProductCommands.CreateProduct;
 
-public class DeleteProductHandler(IProductRepository productRepository) : IRequestHandler<CreateProductCommand, CreateProductResponse>
+public class CreateProductHandler (IProductRepository productRepository) : IRequestHandler<CreateProductCommand, CreateProductResponse>
 {
     public async Task<CreateProductResponse> Handle(
         CreateProductCommand request,
