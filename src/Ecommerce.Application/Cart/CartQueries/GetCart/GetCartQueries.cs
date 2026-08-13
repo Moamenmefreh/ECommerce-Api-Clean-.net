@@ -7,7 +7,6 @@ namespace Ecommerce.Application.Cart.CartQueries.GetCart;
 
 public class GetCartQuery : IRequest<GetCartResponse>
 {
-    public Guid CartId { get; set; }
 }
 public class GetCartResponse
 {

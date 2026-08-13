@@ -1,16 +1,31 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Repository;
+using Ecommerce.Domain.AggregateRootes.Users.IRepository;
+using Ecommerce.Domain.BaseEntity;
 using MediatR;
 
 namespace Ecommerce.Application.Cart.CartQueries.GetCart;
 
-public class GetCartHandler(ICartRepository cartRepository)
+public class GetCartHandler(
+    ICartRepository cartRepository,
+    ICurrentUserService currentUserService)
     : IRequestHandler<GetCartQuery, GetCartResponse>
 {
     public async Task<GetCartResponse> Handle(
         GetCartQuery request,
         CancellationToken cancellationToken)
     {
-        var cart = cartRepository.GetCart(request.CartId);
+        var userId = currentUserService.UserId;
+
+        if (userId == null)
+        {
+            return new GetCartResponse
+            {
+                IsSuccess = false,
+                Message = "User is not authenticated."
+            };
+        }
+
+        var cart =  cartRepository.GetByUserId(userId.Value);
 
         if (cart == null)
         {

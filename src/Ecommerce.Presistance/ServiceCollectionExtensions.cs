@@ -30,7 +30,8 @@ public static class ServiceCollectionExtensions
         services.Configure<EmailSettings>(
             configuration.GetSection("EmailSettings"));
 
-     
+        services.Configure<JwtOptions>(
+       configuration.GetSection("Jwt"));
 
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.AddScoped<EmailSettings>();
