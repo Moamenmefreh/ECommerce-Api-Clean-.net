@@ -4,11 +4,8 @@ namespace Ecommerce.Domain.AggregateRootes.Orders.Repository;
 
 public interface IOrderRepository
 {
-    void Add(Order order);
-
-    Order? GetById(Guid orderId);
-
-    List<Order> GetUserOrders(Guid userId);
-
-    void Update(Order order);
+    public void Add(Order order);
+    public Order? GetById(Guid orderId);
+    public List<Order> GetUserOrders(Guid userId);
+    public  void Update(Order order);
 }
