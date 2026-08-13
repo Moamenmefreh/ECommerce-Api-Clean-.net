@@ -1,46 +1,68 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
 using Ecommerce.Domain.AggregateRootes.Carts.Repository;
+using Ecommerce.Domain.BaseEntity;
 using MediatR;
 
 namespace Ecommerce.Application.Cart.CartCommands.AddItem;
 
-public class AddItemHandler(ICartItemRepository cartItemRepository) : IRequestHandler<AddItemCommands, AddItemResponse>
+public class AddItemHandler(
+    ICartRepository cartRepository,
+    ICartItemRepository cartItemRepository,
+    ICurrentUserService currentUserService)
+    : IRequestHandler<AddItemCommand, AddItemResponse>
 {
-    public async Task<AddItemResponse> Handle(AddItemCommands request, CancellationToken cancellationToken)
+    public async Task<AddItemResponse> Handle(
+        AddItemCommand request,
+        CancellationToken cancellationToken)
     {
         if (request == null)
-        {
             throw new ArgumentNullException(nameof(request));
 
-        }
         try
         {
-            var cart = cartItemRepository.GetbyCartId(request.CartId);
+            // Get UserId from JWT Token
+            var userId = currentUserService.UserId;
+
+            if (userId == null)
+            {
+                return new AddItemResponse
+                {
+                    IsSuccess = false,
+                    Message = "User is not authenticated."
+                };
+            }
+
+            // Get user's cart
+            var cart = cartRepository.GetByUserId(userId.Value);
+
             if (cart == null)
             {
                 return new AddItemResponse
                 {
-                    ItemId = request.CartId,
-                    Message = "Cart Not Found",
                     IsSuccess = false,
+                    Message = "Cart not found."
                 };
             }
-            var cartItem=CartItem.CreateItem(request.Quntity,request.Price,request.CartId,request.ProductId);
-            cartItemRepository.Add(cartItem);
+
+            // Create CartItem
+            var cartItem = CartItem.CreateItem(request.Quantity,request.ProductId,cart.Id);
+
+             cartItemRepository.Add(cartItem);
+
             return new AddItemResponse
             {
-                ItemId= cartItem.Id,
-                Message="Add Item Successfully",
-                IsSuccess=true,
+                ItemId = cartItem.Id,
+                Message = "Item added successfully.",
+                IsSuccess = true
             };
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return new AddItemResponse
             {
-                ItemId=Guid.Empty,
-                IsSuccess=false,
-                Message=ex.Message,
+                ItemId = Guid.Empty,
+                IsSuccess = false,
+                Message = ex.Message
             };
         }
     }

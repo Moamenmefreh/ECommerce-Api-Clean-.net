@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Products.Entities;
 using Ecommerce.Domain.BaseEntity;
+using MediatR;
 
 namespace Ecommerce.Domain.AggregateRootes.Carts.Entities;
 
@@ -11,18 +12,17 @@ public class CartItem:Base
     
     public Guid CartId { get; set; }
     public Guid ProductId { get; set; }
-    public Product? Product { get; set; } 
+    public Product? Product { get; set; }
 
-    public static CartItem CreateItem(int quntity, decimal price, Guid cartId, Guid productId)
+    public static CartItem CreateItem(int quantity,Guid productId,Guid cartId)
     {
         return new CartItem
         {
             Id = Guid.NewGuid(),
-            Quentity = quntity,
-            UnitPrice = price,
-            CreatedAt = DateTime.UtcNow,
+            Quentity = quantity,
             ProductId = productId,
-            CartId = cartId
+            CartId = cartId,
+            CreatedAt = DateTime.UtcNow
         };
     }
     public void UpdateQuantity(int quantity)

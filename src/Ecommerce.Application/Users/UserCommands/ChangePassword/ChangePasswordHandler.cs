@@ -1,6 +1,6 @@
-﻿using Ecommerce.Domain.AggregateRootes.Users.IRepository;
-using BCrypt;
+﻿using BCrypt;
 using MediatR;
+using Ecommerce.Domain.AggregateRootes.Users.IRepository;
 
 namespace Ecommerce.Application.Users.UserCommands.ChangePassword;
 

@@ -26,24 +26,18 @@ namespace Ecommerce.API.Controllers
 
             return Ok(result);
         }
-        [HttpGet("GetOrder/{id:guid}")]
-        public async Task<IActionResult> GetOrder([FromRoute] Guid id)
+        [HttpGet("GetOrder")]
+        public async Task<IActionResult> GetOrder()
         {
-            GetOrderByIdQuery query = new GetOrderByIdQuery
-            {
-                OrderId = id,
-            };
-            var result = await sender.Send(query);
+            
+            var result = await sender.Send(new GetOrderByIdQuery());
             return Ok(result);
         }
-        [HttpGet("user/{userId:guid}")]
-        public async Task<IActionResult> GetUserOrders(Guid userId)
+        [HttpGet("oreder user")]
+        public async Task<IActionResult> GetUserOrders()
         {
-            var result = await sender.Send(new GetUserOrdersQuery
-            {
-                UserId = userId
-            });
-
+            var result = await sender.Send(new GetUserOrdersQuery());
+            
             return Ok(result);
 
         }

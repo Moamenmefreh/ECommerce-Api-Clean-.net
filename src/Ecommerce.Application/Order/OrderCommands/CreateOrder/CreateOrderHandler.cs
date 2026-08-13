@@ -1,13 +1,15 @@
-﻿using Ecommerce.Domain.AggregateRootes.Carts.Repository;
+﻿using Ecommerce.Application.Order.OrderCommands.CreateOrder;
+using Ecommerce.Domain.AggregateRootes.Carts.Repository;
 using Ecommerce.Domain.AggregateRootes.Orders.Repository;
-using Ecommerce.Domain.AggregateRootes.Orders.Entities;
+using Ecommerce.Domain.BaseEntity;
 using MediatR;
 
- namespace Ecommerce.Application.Order.OrderCommands.CreateOrder;
+namespace Ecommerce.Application.Orders.OrderCommands.CreateOrder;
 
 public class CreateOrderHandler(
     ICartRepository cartRepository,
-    IOrderRepository orderRepository)
+    IOrderRepository orderRepository,
+    ICurrentUserService currentUserService)
     : IRequestHandler<CreateOrderCommand, CreateOrderResponse>
 {
     public async Task<CreateOrderResponse> Handle(
@@ -16,8 +18,19 @@ public class CreateOrderHandler(
     {
         try
         {
-            // الحصول على السلة الخاصة بالمستخدم
-            var cart = cartRepository.GetByUserId(request.UserId);
+            var currentUserId = currentUserService.UserId;
+
+            if (currentUserId == null)
+            {
+                return new CreateOrderResponse
+                {
+                    IsSuccess = false,
+                    Message = "User is not authenticated."
+                };
+            }
+
+            // الحصول على السلة الخاصة بالمستخدم الحالي
+            var cart = cartRepository.GetByUserId(currentUserId.Value);
 
             if (cart == null)
             {
@@ -37,8 +50,10 @@ public class CreateOrderHandler(
                 };
             }
 
-            // إنشاء Order
-            var order = Ecommerce.Domain.AggregateRootes.Orders.Entities.Order.Create(request.UserId);
+            // إنشاء Order للمستخدم الحالي
+            var order = Ecommerce.Domain.AggregateRootes.Orders.Entities.Order.Create(
+                currentUserId.Value);
+
             // نقل عناصر السلة إلى الطلب
             foreach (var item in cart.CartItems)
             {
