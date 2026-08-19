@@ -4,7 +4,7 @@ namespace Ecommerce.Application.Orders.OrderQueries.GetUserOrders;
 
 public class GetUserOrdersQuery : IRequest<List<GetUserOrdersResponse>>
 {
-    public Guid UserId { get; set; }
+
 }
 public class GetUserOrdersResponse
 {

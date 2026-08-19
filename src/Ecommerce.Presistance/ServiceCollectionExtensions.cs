@@ -7,13 +7,11 @@ using Ecommerce.Domain.AggregateRootes.Products.Repository;
 using Ecommerce.Domain.AggregateRootes.Reviews.Repository;
 using Ecommerce.Domain.AggregateRootes.Users.IRepository;
 using Ecommerce.Domain.BaseEntity;
+using Ecommerce.Infrastracture.Authentication;
 using Ecommerce.Infrastructure.Authentication;
-using Ecommerce.Infrastructure.JWT;
 using Ecommerce.Presistance.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -32,7 +30,8 @@ public static class ServiceCollectionExtensions
         services.Configure<EmailSettings>(
             configuration.GetSection("EmailSettings"));
 
-     
+        services.Configure<JwtOptions>(
+       configuration.GetSection("Jwt"));
 
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.AddScoped<EmailSettings>();
@@ -43,6 +42,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<Ecommerce.Domain.AggregateRootes.Payments.Repository.IPaymentMethodRepository, PaymentRepository>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddHttpContextAccessor();

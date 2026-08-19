@@ -23,9 +23,9 @@ public class Product : Base
 
     public Category? Category { get; set; }
 
-   
+
     //public CartItem? CartItem { get; set; }
-    public static Product Create(string name, string description, decimal price, decimal? discountPrice, int quantity, Guid categoryId, bool isAvailable = true)
+    public static Product Create(string name,string description,decimal price,decimal? discountPrice,int quantity,Guid categoryId,bool isAvailable = true)
     {
         return new Product
         {
@@ -33,14 +33,38 @@ public class Product : Base
             Name = name,
             Description = description,
             DiscountPrice = discountPrice,
+            StockQuantity = quantity,
             IsAvailable = isAvailable,
-            CategoryId=categoryId,
-            IsDeleted = false,
-           
-          
-            
+            CategoryId = categoryId,
+            IsDeleted = false
         };
+    }
+    public bool HasStock(int quantity)
+    {
+        return quantity > 0 && StockQuantity >= quantity;
+    }
 
+    public void DecreaseStock(int quantity)
+    {
+        if (quantity <= 0)
+            throw new ArgumentException("Quantity must be greater than zero.");
+
+        if (StockQuantity < quantity)
+            throw new InvalidOperationException("Insufficient stock.");
+
+        StockQuantity -= quantity;
+
+        if (StockQuantity == 0)
+            IsAvailable = false;
+    }
+
+    public void IncreaseStock(int quantity)
+    {
+        if (quantity <= 0)
+            throw new ArgumentException("Quantity must be greater than zero.");
+
+        StockQuantity += quantity;
+        IsAvailable = true;
     }
     public void Delete(Guid productId) { 
        

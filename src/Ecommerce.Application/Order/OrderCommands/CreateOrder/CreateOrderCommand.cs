@@ -4,7 +4,6 @@ namespace Ecommerce.Application.Order.OrderCommands.CreateOrder;
 
 public class CreateOrderCommand : IRequest<CreateOrderResponse>
 {
-    public Guid UserId { get; set; }
 }
 public class CreateOrderResponse
 {

@@ -7,4 +7,5 @@ public interface ICartRepository
     public Cart? GetCart(Guid cartId);
     public void ClearCart(Cart cart);
     Cart? GetByUserId(Guid userId);
+    public void AddCart(Cart cart);
 }

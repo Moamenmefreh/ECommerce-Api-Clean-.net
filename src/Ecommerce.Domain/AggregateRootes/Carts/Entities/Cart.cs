@@ -1,22 +1,28 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Users.Entities;
 using Ecommerce.Domain.BaseEntity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Ecommerce.Domain.AggregateRootes.Carts.Entities
+namespace Ecommerce.Domain.AggregateRootes.Carts.Entities;
+
+public class Cart : Base
 {
-    public class Cart : Base
+
+    public Guid UserId { get; set; }
+    public User? User { get; set; }
+    public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+
+    public static Cart CreateCart(Guid userId)
     {
-
-        public Guid UserId { get; set; }
-        public User? User { get; set; }
-        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
-
-
-        public void ClearItems()
+       
+        return new Cart
         {
-            CartItems.Clear();
-        }
+            Id = Guid.NewGuid(),
+            UserId = userId
+
+        };
+    }
+
+    public void ClearItems()
+    {
+        CartItems.Clear();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Domain.AggregateRootes.Carts.Entities;
 using Ecommerce.Domain.AggregateRootes.Carts.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Presistance.Repository;
@@ -24,5 +25,12 @@ public class CartRepository(AppdbContext dbContext):ICartRepository
             .Include(c => c.CartItems)
             .ThenInclude(i => i.Product)
             .FirstOrDefault(c => c.UserId == userId);
+    }
+
+    public void AddCart(Cart cart)
+    {
+       dbContext.Carts.Add(cart);
+        dbContext.SaveChanges();
+       
     }
 }
